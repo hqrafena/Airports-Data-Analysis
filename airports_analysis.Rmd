@@ -1,0 +1,106 @@
+---
+title: "R Notebook"
+output:
+  word_document: default
+  html_notebook: default
+---
+# Answering the questions: 
+
+<p>
+  1. How many airports are between 42 and 43 degrees latitude? 68 airports<br/> 
+  2. What is the altitude of the airport in Idaho Falls, Idaho (IDA)? 4744<br/>
+  3. what is the airport ID and altitude of the highest airport in the dataset? AirportID: 4084; Altitude: 9070<br/>
+  4. what is the airport ID and altitude of the lowest airport in the dataset? AirportID: 7646; Altitude: -115
+</p>
+
+### Loading the library
+
+```{r}
+library(dplyr)
+```
+
+### Loading data
+
+```{r}
+my_airports <- read.csv("airports.csv", header = TRUE)
+```
+
+## How many airports are between 42 and 43 degrees latitude?
+ 
+### filtering airports between the latitudes
+
+```{r}
+airport_id <- subset(my_airports, Latitude >=42 & Latitude <=43)
+```
+
+### the number of airports
+
+```{r}
+nrow(airport_id) 
+```
+
+## What is the altitude of the airport in Idaho Falls, Idaho (IDA)?
+
+### Only selecting airportID, name, city, IATA, altitude
+
+```{r}
+idaho_airport <- select(my_airports, Name, City, IATA, Altitude)
+```
+
+### Filtering for Idaho Fall, Idaho(IDA)
+
+```{r}
+filter(idaho_airport, City == "Idaho Falls")
+```
+
+## what is the airport ID and altitude of the highest airport in the dataset?
+
+### filter only the airport ID and altitude from the highest_airport
+
+```{r}
+#high_alt_port <- select(my_airports, airport_id, Altitude, Name)#
+```
+
+### Checking the airport id column type
+
+```{r}
+str(my_airports)
+```
+
+### Changing airport id column type
+
+```{r}
+my_airports$AirportID <- as.factor(my_airports$AirportID)
+```
+
+### Now airport id is a categorical variable or factor
+
+```{r}
+str(my_airports)
+```
+
+### using subset to find info about the highest altitude of the airports
+
+```{r}
+highest_airport <- subset(my_airports, Altitude==max(Altitude))
+```
+
+### Finding the airport ID of the highest altitude airport
+
+```{r}
+select(highest_airport, AirportID, Altitude)
+```
+
+## what is the airport ID and altitude of the lowest airport in the dataset?
+
+### Only selecting airport id, altitude and name
+
+```{r}
+filter_airport <- select(my_airports, AirportID, Altitude)
+```
+
+### finding the airport id and altitude of the lowest airport
+
+```{r}
+subset(filter_airport, Altitude==min(Altitude))
+```
